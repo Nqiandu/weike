@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dlg.proj.demo.mapper.AddressMapper" >
+  <resultMap id="BaseResultMap" type="com.dlg.proj.demo.entity.Address" >
+    <id column="adress_id" property="adressId" jdbcType="INTEGER" />
+    <result column="adress_name" property="adressName" jdbcType="VARCHAR" />
+    <result column="adress_title" property="adressTitle" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    adress_id, adress_name, adress_title
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_address
+    where adress_id = #{adressId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_address
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_address
+    where adress_id = #{adressId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" useGeneratedKeys="true" keyProperty="adressId" parameterType="com.dlg.proj.demo.entity.Address" >
+    insert into t_address (adress_id, adress_name, adress_title)
+    values (#{adressId,jdbcType=INTEGER}, #{adressName,jdbcType=VARCHAR}, #{adressTitle,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" useGeneratedKeys="true" keyProperty="adressId" parameterType="com.dlg.proj.demo.entity.Address" >
+    insert into t_address
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="adressId != null" >
+        adress_id,
+      </if>
+      <if test="adressName != null" >
+        adress_name,
+      </if>
+      <if test="adressTitle != null" >
+        adress_title,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="adressId != null" >
+        #{adressId,jdbcType=INTEGER},
+      </if>
+      <if test="adressName != null" >
+        #{adressName,jdbcType=VARCHAR},
+      </if>
+      <if test="adressTitle != null" >
+        #{adressTitle,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dlg.proj.demo.entity.Address" >
+    update t_address
+    <set >
+      <if test="adressName != null" >
+        adress_name = #{adressName,jdbcType=VARCHAR},
+      </if>
+      <if test="adressTitle != null" >
+        adress_title = #{adressTitle,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where adress_id = #{adressId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dlg.proj.demo.entity.Address" >
+    update t_address
+    set adress_name = #{adressName,jdbcType=VARCHAR},adress_title = #{adressTitle,jdbcType=VARCHAR}
+    where adress_id = #{adressId,jdbcType=INTEGER}
+  </update>
+</mapper>

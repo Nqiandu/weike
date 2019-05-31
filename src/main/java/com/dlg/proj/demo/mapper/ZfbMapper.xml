@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dlg.proj.demo.mapper.ZfbMapper" >
+    <insert id="insertinto" parameterType="com.dlg.proj.demo.entity.Zfb">
+    insert into zfb (zfbNum,userid,money) VALUES(#{zfbNum},#{userid},#{money})
+    </insert>
+    <select id="selectAll" parameterType="com.dlg.proj.demo.entity.Zfb" resultType="Zfb">
+        select z.id,z.userid,u.user_name,z.zfbNum,z.money,z.payState from zfb z,t_user u where z.userid=u.user_id
+        and  zfbNum like '%${zfbNum}%' order by z.id desc
+    </select>
+    <select id="count" resultType="int" parameterType="com.dlg.proj.demo.entity.Zfb">
+        select count(1) from zfb z,t_user u where z.userid=u.user_id
+        and  zfbNum like '%${zfbNum}%'
+    </select>
+    <update id="zz" parameterType="int">
+        update zfb set payState=1 where id=#{id}
+    </update>
+</mapper>

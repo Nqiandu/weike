@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?> <!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dlg.proj.demo.mapper.LoginMapper">
+    <resultMap id="user" type="com.dlg.proj.demo.entity.Userinfo">
+        <id column="user_id" property="id"></id>
+        <result column="user_name" property="username"></result>
+        <result column="user_password" property="password"></result>
+        <result column="user_sex" property="sex"></result>
+        <result column="user_phone" property="phone"></result>
+    </resultMap>
+    <insert id="register" parameterType="com.dlg.proj.demo.entity.Userinfo">
+        INSERT INTO  t_user(user_phone) VALUES (#{phone})
+    </insert>
+    
+    <select id="selectByTel" resultMap="user">
+        SELECT * from t_user where user_phone = #{phone}
+    </select>
+    
+
+
+</mapper>

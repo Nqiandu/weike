@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dlg.proj.demo.mapper.RoleFunctionMapper" >
+  <resultMap id="BaseResultMap" type="com.dlg.proj.demo.entity.RoleFunction" >
+    <result column="role_id" property="roleId" jdbcType="INTEGER" />
+    <result column="function_id" property="functionId" jdbcType="INTEGER" />
+    <association  property="fun" column="function_id" select="com.dlg.proj.demo.mapper.FunctionMapper.selectByPrimaryKey"></association>
+  </resultMap>
+  <select id="selbyiddd" parameterType="int" resultMap="BaseResultMap">
+    select * from role_function where role_id=#{role_id}
+  </select>
+  <select id="selbyid" parameterType="int" resultMap="BaseResultMap">
+    select * from role_function where role_id=#{role_id}
+  </select>
+  <insert id="insert" parameterType="com.dlg.proj.demo.entity.RoleFunction" >
+    insert into role_function (role_id, function_id)
+    values (#{roleId,jdbcType=INTEGER}, #{functionId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dlg.proj.demo.entity.RoleFunction" >
+    insert into role_function
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="roleId != null" >
+        role_id,
+      </if>
+      <if test="functionId != null" >
+        function_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="roleId != null" >
+        #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="functionId != null" >
+        #{functionId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+</mapper>

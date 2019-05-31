@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dlg.proj.demo.mapper.HomeShowMapper">
+    <select id="selectHomeShow" parameterType="java.lang.Integer" resultType="HomeOrder">
+        SELECT id,
+               order_name,
+               order_moneytype,
+               order_percount,
+               order_money,
+               order_pnumber,
+               DATE_FORMAT(order_starttime, '%m.%d') os,
+               DATE_FORMAT(order_endtime, '%m.%d')   oe,
+               order_userid,
+               order_issue,
+               t.user_name                           un,
+               ta.adress_title  address
+        FROM t_order,
+             t_user t,
+             t_address ta
+        where order_state = '1'
+          AND order_pnumber != '0'
+          AND t.user_id = t_order.order_userid
+          AND ta.adress_id = t_order.order_address
+          and order_userid!=#{order_userid,jdbcType=INTEGER}
+        ORDER BY order_issue desc
+    </select>
+    <select id="selectMoneyBig" parameterType="java.lang.Integer" resultType="HomeOrder">
+        SELECT id,
+        order_name,
+        order_moneytype,
+        order_percount,
+        order_money,
+        order_pnumber,
+        DATE_FORMAT(order_starttime, '%m.%d') os,
+        DATE_FORMAT(order_endtime, '%m.%d')   oe,
+        order_userid,
+        order_issue,
+        t.user_name                           un,
+        ta.adress_title address
+        FROM t_order,
+        t_user t,
+        t_address ta
+        where order_state = '1'
+        AND order_pnumber != '0'
+        AND t.user_id = t_order.order_userid
+        AND ta.adress_id = t_order.order_address
+        and order_userid!=#{order_userid,jdbcType=INTEGER}
+        ORDER BY order_money DESC
+    </select>
+    <select id="selectOther" parameterType="java.lang.Integer" resultType="HomeOrder">
+        SELECT id,
+        order_name,
+        order_moneytype,
+        order_percount,
+        order_money,
+        order_pnumber,
+        DATE_FORMAT(order_starttime, '%m.%d') os,
+        DATE_FORMAT(order_endtime, '%m.%d')   oe,
+        order_userid,
+        order_issue,
+        t.user_name                           un,
+        ta.adress_title address
+        FROM t_order,
+        t_user t,
+        t_address ta
+        where order_state = '1'
+        AND order_pnumber != '0'
+        AND t.user_id = t_order.order_userid
+        AND ta.adress_id = t_order.order_address
+        AND order_type ='其他'
+        and order_userid!=#{order_userid,jdbcType=INTEGER}
+        ORDER BY order_issue desc
+    </select>
+    <select id="getIdSelect" resultType="HomeOrder" parameterType="java.lang.Integer">
+        SELECT order_name,
+        order_type,
+        order_percount,
+        order_moneytype,
+        order_starttime                                                    os,
+        order_endtime                                                      oe,
+        order_jobdescription,
+        order_jobspecification,
+        order_collect,
+        DATEDIFF(order_endtime,order_starttime) timeDiff,
+        (cast(order_percount as decimal) - cast(order_pnumber as decimal)) order_pnumber,
+        order_sex,
+        t.adress_name                                                      tan,
+        order_userid,
+        order_phone,
+        order_money
+        FROM t_order,
+        t_address t
+        WHERE t_order.order_address = t.adress_id
+        and id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectByid" resultType="company" parameterType="int">
+        select comp_type,
+               cusers,
+               comp_industry,
+               comp_desc,
+               comp_email,
+               m.user_id,
+               user_name,
+               user_phone
+        from t_company n,
+             t_user m
+        where n.user_id = m.user_id
+          and m.user_id = #{user_id}
+    </select>
+
+</mapper>

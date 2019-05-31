@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?> <!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dlg.proj.demo.mapper.CollectionMapper">
+
+<select id="selectcol" resultType="int">
+    SELECT COUNT(1) from t_collection where userid = #{userid} and orderid = #{orderid}
+</select>
+    <select id="selectcol2" resultType="com.dlg.proj.demo.entity.Collectionn">
+        SELECT * from t_collection where userid = #{userid} and orderid = #{orderid}
+    </select>
+    <insert id="insertcol" parameterType="int">
+  INSERT INTO  t_collection(userid,orderid)VALUES (#{userid},#{orderid})
+    </insert>
+
+    <update id="updatecol" parameterType="int">
+UPDATE t_collection SET  state = 0 where userid = #{userid} and orderid = #{orderid}
+    </update>
+
+    <update id="updatecol2" parameterType="int">
+        UPDATE t_collection SET  state = 1 where userid = #{userid} and orderid = #{orderid}
+    </update>
+
+    <select id="selectallcol" resultType="com.dlg.proj.demo.entity.Collectionn">
+        SELECT orderid from t_collection where userid = #{userid} and state = 1 ORDER BY id DESC
+    </select>
+
+</mapper>

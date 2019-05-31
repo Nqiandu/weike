@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dlg.proj.demo.mapper.OrderPayMapper">
+    <insert id="addorderpay" parameterType="com.dlg.proj.demo.entity.OrderPay">
+        insert into t_orderpay(orderid,orderdress,orderstarttime,orderendtime,orderprice,worktime,ordername,paystate,fuwufei,userid,oid)
+        values (#{orderid},#{orderdress},#{orderstarttime},#{orderendtime},#{orderprice},#{worktime},#{ordername},0,#{fuwufei},#{userid},#{oid})
+    </insert>
+
+    <update id="editpay" parameterType="String">
+        update  t_orderpay set paystate=1 where orderid=#{orderid}
+    </update>
+
+    <select id="selectUidOid" parameterType="String" resultType="com.dlg.proj.demo.entity.OrderPay">
+        select userid,oid from t_orderpay where orderid=#{orderid}
+    </select>
+
+    <select id="selectMoney" parameterType="String" resultType="com.dlg.proj.demo.entity.OrderPay">
+        select orderprice,userid from t_orderpay where orderid =#{orderid}
+    </select>
+    <update id="addUserMoney" parameterType="object">
+        update t_user set money = money + #{price}  where user_id = #{userid}
+    </update>
+
+    <update id="editGetOrder" parameterType="int">
+        update t_getorder set get_state=2 where order_id=#{order_id} and user_id = #{userid}
+    </update>
+
+    <select id="getpaystate" resultType="com.dlg.proj.demo.entity.OrderPay">
+        SELECT paystate from t_orderpay where userid = #{uid} and oid = #{oid}
+    </select>
+
+    <select id="selectbyoiduid" resultType="com.dlg.proj.demo.entity.OrderPay">
+        SELECT * from t_orderpay where userid = #{userid} and oid = #{orderid}
+    </select>
+</mapper>

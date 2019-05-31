@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dlg.proj.demo.mapper.UserMapper" >
+    <resultMap id="user" type="com.dlg.proj.demo.entity.User">
+        <result column="user_id" property="user_id"></result>
+        <collection property="list1" column="user_id" select="com.dlg.proj.demo.mapper.OrderMapper.selbuuserid"></collection>
+        <collection property="list2" column="user_id" select="com.dlg.proj.demo.mapper.GetorderMapper.seechar"></collection>
+    </resultMap>
+    <select id="selechar" resultMap="user">
+        select * from t_user
+    </select>
+    <select id="selectAll" resultType="User">
+        select * from t_user where user_name like '%${user_name}%' order by user_id desc
+    </select>
+    <select id="count" resultType="int">
+        select count(1) from t_user where user_name like '%${user_name}%'
+    </select>
+    <insert id="insertUser">
+        insert into t_user (user_name,user_password,user_phone,user_sex,user_carid,user_address)
+        values (#{user_name},#{user_password},#{user_phone},#{user_sex},#{user_carid},#{user_address})
+    </insert>
+    <delete id="deleteUser">
+        delete from t_user where user_id=#{user_id,jdbcType=INTEGER}
+    </delete>
+    <update id="updateUser">
+        update t_user set user_name=#{user_name},user_password=#{user_password},
+        user_phone=#{user_phone},user_sex=#{user_sex},user_carid=#{user_carid},user_address=#{user_address}
+         where user_id=#{user_id}
+    </update>
+    <select id="selectbyid" parameterType="int" resultType="User" resultMap="user">
+        select * from t_user where user_id=#{user_id}
+    </select>
+    <update id="shrz" parameterType="User">
+        UPDATE t_user set user_name=#{user_name},user_address=#{user_address},user_sex=#{user_sex},user_carid=#{user_carid}
+        where user_id=#{user_id}
+    </update>
+    <select id="selectByUserid" resultType="User">
+    select * from t_user where user_id = #{user_id}
+    </select>
+    
+    <update id="updatemoney" parameterType="object">
+        update t_user SET money = money - #{money} WHERE user_id = #{userid}
+    </update>
+</mapper>

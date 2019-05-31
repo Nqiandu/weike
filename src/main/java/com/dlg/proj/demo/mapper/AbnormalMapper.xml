@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dlg.proj.demo.mapper.AbnormalMapper" >
+  <resultMap id="BaseResultMap" type="com.dlg.proj.demo.entity.Abnormal" >
+    <id column="abnor_id" property="abnorId" jdbcType="INTEGER" />
+    <result column="abnor_send" property="abnorSend" jdbcType="VARCHAR" />
+    <result column="order_number" property="orderNumber" jdbcType="VARCHAR" />
+    <result column="order_name" property="orderName" jdbcType="VARCHAR" />
+    <result column="order_phone" property="orderPhone" jdbcType="VARCHAR" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="user_phone" property="userPhone" jdbcType="VARCHAR" />
+    <result column="abnor_reson" property="abnorReson" jdbcType="VARCHAR" />
+    <result column="abnor_time" property="abnorTime" jdbcType="TIMESTAMP" />
+    <result column="abnor_state" property="abnorState" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    abnor_id, abnor_send, order_number, order_name, order_phone, user_name, user_phone, 
+    abnor_reson, abnor_time, abnor_state
+  </sql>
+
+  <select id="selectAll" parameterType="com.dlg.proj.demo.entity.Abnormal" resultMap="BaseResultMap">
+  select * from t_abnormal where order_number like '%${orderNumber}%' order by abnor_id desc
+  </select>
+  <select id="count" resultType="int">
+  select count(1) from t_abnormal where order_number like '%${orderNumber}%'
+  </select>
+
+  <select id="selectAll2" parameterType="com.dlg.proj.demo.entity.Abnormal" resultMap="BaseResultMap">
+  select * from t_abnormal2 where order_number like '%${orderNumber}%' order by abnor_id desc
+  </select>
+  <select id="count2" resultType="int">
+  select count(1) from t_abnormal2 where order_number like '%${orderNumber}%'
+  </select>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_abnormal
+    where abnor_id = #{abnorId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_abnormal
+    where abnor_id = #{abnorId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.dlg.proj.demo.entity.Abnormal" >
+    insert into t_abnormal (abnor_id, abnor_send, order_number, 
+      order_name, order_phone, user_name, 
+      user_phone, abnor_reson, abnor_time, 
+      abnor_state)
+    values (#{abnorId,jdbcType=INTEGER}, #{abnorSend,jdbcType=VARCHAR}, #{orderNumber,jdbcType=VARCHAR}, 
+      #{orderName,jdbcType=VARCHAR}, #{orderPhone,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
+      #{userPhone,jdbcType=VARCHAR}, #{abnorReson,jdbcType=VARCHAR}, #{abnorTime,jdbcType=TIMESTAMP}, 
+      #{abnorState,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dlg.proj.demo.entity.Abnormal" >
+    insert into t_abnormal
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="abnorId != null" >
+        abnor_id,
+      </if>
+      <if test="abnorSend != null" >
+        abnor_send,
+      </if>
+      <if test="orderNumber != null" >
+        order_number,
+      </if>
+      <if test="orderName != null" >
+        order_name,
+      </if>
+      <if test="orderPhone != null" >
+        order_phone,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="userPhone != null" >
+        user_phone,
+      </if>
+      <if test="abnorReson != null" >
+        abnor_reson,
+      </if>
+      <if test="abnorTime != null" >
+        abnor_time,
+      </if>
+      <if test="abnorState != null" >
+        abnor_state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="abnorId != null" >
+        #{abnorId,jdbcType=INTEGER},
+      </if>
+      <if test="abnorSend != null" >
+        #{abnorSend,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNumber != null" >
+        #{orderNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="orderName != null" >
+        #{orderName,jdbcType=VARCHAR},
+      </if>
+      <if test="orderPhone != null" >
+        #{orderPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userPhone != null" >
+        #{userPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="abnorReson != null" >
+        #{abnorReson,jdbcType=VARCHAR},
+      </if>
+      <if test="abnorTime != null" >
+        #{abnorTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="abnorState != null" >
+        #{abnorState,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dlg.proj.demo.entity.Abnormal" >
+    update t_abnormal
+    <set >
+      <if test="abnorSend != null" >
+        abnor_send = #{abnorSend,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNumber != null" >
+        order_number = #{orderNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="orderName != null" >
+        order_name = #{orderName,jdbcType=VARCHAR},
+      </if>
+      <if test="orderPhone != null" >
+        order_phone = #{orderPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userPhone != null" >
+        user_phone = #{userPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="abnorReson != null" >
+        abnor_reson = #{abnorReson,jdbcType=VARCHAR},
+      </if>
+      <if test="abnorTime != null" >
+        abnor_time = #{abnorTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="abnorState != null" >
+        abnor_state = #{abnorState,jdbcType=INTEGER},
+      </if>
+    </set>
+    where abnor_id = #{abnorId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dlg.proj.demo.entity.Abnormal" >
+    update t_abnormal
+    set abnor_send = #{abnorSend,jdbcType=VARCHAR},
+      order_number = #{orderNumber,jdbcType=VARCHAR},
+      order_name = #{orderName,jdbcType=VARCHAR},
+      order_phone = #{orderPhone,jdbcType=VARCHAR},
+      user_name = #{userName,jdbcType=VARCHAR},
+      user_phone = #{userPhone,jdbcType=VARCHAR},
+      abnor_reson = #{abnorReson,jdbcType=VARCHAR},
+      abnor_time = #{abnorTime,jdbcType=TIMESTAMP},
+      abnor_state = #{abnorState,jdbcType=INTEGER}
+    where abnor_id = #{abnorId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dlg.proj.demo.mapper.EmployMapper">
+  <resultMap id="BaseResultMap" type="com.dlg.proj.demo.entity.Employ" >
+    <id column="emp_id" property="empId" jdbcType="INTEGER" />
+    <result column="emp_name" property="empName" jdbcType="VARCHAR" />
+    <result column="emp_phone" property="empPhone" jdbcType="VARCHAR" />
+    <result column="emp_sex" property="empSex" jdbcType="VARCHAR" />
+    <result column="emp_entrytime" property="empEntrytime" jdbcType="VARCHAR" />
+    <result column="emp_resigntime" property="empResigntime" jdbcType="VARCHAR" />
+    <result column="emp_address" property="empAddress" jdbcType="VARCHAR" />
+    <result column="emp_email" property="empEmail" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="selectAll" parameterType="com.dlg.proj.demo.entity.EmpUtil" resultMap="BaseResultMap">
+    select * from t_employ where emp_name like '%${empName}%' order by emp_id desc
+  </select>
+  <select id="count" resultType="int">
+    select count(1) from t_employ where emp_name like '%${empName}%'
+  </select>
+  <insert id="insertEmploy">
+    insert into t_employ (emp_name, emp_phone, emp_sex, emp_entrytime,emp_resigntime, emp_address, emp_email)
+    values (#{empName}, #{empPhone}, #{empSex}, #{empEntrytime}, #{empResigntime}, #{empAddress}, #{empEmail})
+  </insert>
+  <delete id="deleteEmploy" parameterType="com.dlg.proj.demo.entity.EmpUtil">
+    delete from t_employ where emp_id=#{empId}
+  </delete>
+  <update id="updateEmploy" parameterType="com.dlg.proj.demo.entity.EmpUtil">
+    update t_employ set emp_name = #{empName},emp_phone = #{empPhone},emp_sex = #{empSex},emp_entrytime = #{empEntrytime},
+      emp_resigntime = #{empResigntime},emp_address = #{empAddress},emp_email = #{empEmail}
+    where emp_id = #{empId,jdbcType=INTEGER}
+  </update>
+</mapper>

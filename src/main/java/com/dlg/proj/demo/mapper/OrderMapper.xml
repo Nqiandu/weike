@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dlg.proj.demo.mapper.OrderMapper">
+    <resultMap id="or" type="com.dlg.proj.demo.entity.Order">
+        <result column="id" property="id"></result>
+        <result column="order_name" property="orderName"></result>
+        <result column="order_type" property="orderType"></result>
+        <result column="order_percount" property="orderPercount"></result>
+        <result column="order_sex" property="orderSex"></result>
+        <result column="order_moneytype" property="orderMoneytype"></result>
+        <result column="order_money" property="orderMoney"></result>
+        <result column="order_starttime" property="orderStarttime"></result>
+        <result column="order_endtime" property="orderEndtime"></result>
+        <result column="order_jobdescription" property="orderJobdescription"></result>
+        <result column="order_jobspecification" property="orderJobspecification"></result>
+        <result column="order_state" property="orderState"></result>
+        <result column="order_issue" property="orderIssue"></result>
+        <result column="order_number" property="orderNumber"></result>
+        <result column="order_userid" property="userid"></result>
+        <result column="order_pnumber" property="orderPnumber"></result>
+        <result column="order_address" property="orderAddress"></result>
+        <result column="order_collect" property="orderCollect"></result>
+        <result column="order_phone" property="orderPhone"></result>
+        <association property="list" column="order_userid" select="com.dlg.proj.demo.mapper.UserMapper.selectbyid"></association>
+        <association property="add" column="order_address" select="com.dlg.proj.demo.mapper.AddressMapper.selectByPrimaryKey"></association>
+    </resultMap>
+    <insert id="addOrder" parameterType="order">
+      insert into t_order
+      (order_pnumber,order_name,order_type,order_percount,order_sex,order_moneytype,order_money,order_starttime,order_endtime,order_jobdescription,order_jobspecification,order_state,order_number,order_address,order_userid,order_collect,order_phone)
+      values (#{orderPercount},#{orderName},#{orderType},#{orderPercount},#{orderSex},#{orderMoneytype},#{orderMoney},#{orderStarttime},#{orderEndtime},#{orderJobdescription},#{orderJobspecification},0,#{orderNumber},#{orderAddress},#{userid},0,#{orderPhone})
+    </insert>
+    <select id="selbuuserid" resultMap="or">
+        select count(*) cun from t_order where order_userid=#{userid}
+    </select>
+
+    <update id="guren" parameterType="order" >
+        UPDATE t_order set order_pnumber=#{orderPnumber} where id=#{id}
+    </update>
+    <select id="selectbyid" parameterType="int" resultMap="or">
+        select * from t_order where id=#{id}
+    </select>
+    <select id="selectjx" parameterType="order" resultMap="or">
+        select * from t_order where order_state=0 and order_name like '%${orderName}%' and order_number like '%${orderNumber}%' order by id desc;
+    </select>
+    <select id="countjx" parameterType="order" resultType="int">
+        select count(1) from t_order where order_state=0 and order_name like '%${orderName}%' and order_number like '%${orderNumber}%';
+    </select>
+    <update id="agr" parameterType="String">
+        UPDATE  t_order set order_state=1 where order_number=#{orderNumber}
+    </update>
+    <update id="disagr" parameterType="String">
+        UPDATE  t_order set order_state=3 where order_number=#{orderNumber}
+    </update>
+    <select id="selectAll" resultMap="or">
+        select * from t_order where order_userid=#{userid} order by order_issue desc
+    </select>
+
+    <select id="selectOrderLoadByState" resultMap="or">
+        select * from t_order where order_state=1 and order_userid=#{userid} order by order_issue desc
+    </select>
+
+    <select id="selectOrderPassByState" resultMap="or">
+        select * from t_order where order_state=2 and order_userid=#{userid} order by order_issue desc
+    </select>
+
+    <select id="selectOrderEndByState" resultMap="or">
+        select * from t_order where order_state=3 and order_userid=#{userid} order by order_issue desc
+    </select>
+    <select id="selectgo"  resultMap="or">
+        select * from t_order where order_state=1
+    </select>
+    <update id="xiajia" parameterType="int">
+        UPDATE t_order set order_state=2 where id=#{id}
+    </update>
+    <select id="selectById" parameterType="int" resultMap="or">
+        select * from t_order where id=#{id}
+    </select>
+    <update id="orderEdit" parameterType="com.dlg.proj.demo.entity.Order">
+        UPDATE t_order set order_name=#{orderName},order_type=#{orderType},
+        order_percount=#{orderPercount},
+        order_sex=#{orderSex},order_moneytype=#{orderMoneytype},
+        order_money=#{orderMoney},order_starttime=#{orderStarttime},order_endtime=#{orderEndtime},
+        order_jobdescription=#{orderJobdescription},
+        order_jobspecification=#{orderJobspecification} where id=#{id}
+    </update>
+
+    <select id="selectAll2" parameterType="Order" resultMap="or">
+        select * from t_order where order_number like '%${orderNumber}%' and order_state in(0,1,2,3) order by id desc
+    </select>
+    <select id="count" resultType="int">
+        select count(1) from t_order where order_number like '%${orderNumber}%'
+    </select>
+
+    <!-- 我接的零工-->
+    <select id="selectByOrderid" resultMap="or">
+        SELECT * from t_order where id = #{id}
+    </select>
+
+    <!--收藏-->
+    <update id="edit0" parameterType="int">
+        update t_order set order_collect=1 where id=#{id}
+    </update>
+    <update id="edit1" parameterType="int">
+        update t_order set order_collect=0 where id=#{id}
+    </update>
+
+    <select id="selectsc" resultMap="or">
+        SELECT * from t_order where order_userid = #{userid} and order_collect = 1
+    </select>
+
+</mapper>

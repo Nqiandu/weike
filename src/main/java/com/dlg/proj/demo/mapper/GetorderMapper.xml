@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dlg.proj.demo.mapper.GetorderMapper" >
+  <resultMap id="BaseResultMap" type="com.dlg.proj.demo.entity.Getorder" >
+    <id column="get_id" property="getId" jdbcType="INTEGER" />
+    <result column="order_id" property="orderId" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="get_state" property="getState" jdbcType="INTEGER" />
+    <result column="get_time" property="getTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    get_id, order_id, user_id, get_state, get_time
+  </sql>
+  <select id="seechar" resultMap="BaseResultMap">
+    select count(*) cun from t_getorder where user_id=#{userId}
+  </select>
+  <select id="selectbyuserid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select * from t_getorder where user_id=#{userId,jdbcType=INTEGER} and get_state in (0,1)
+  </select>
+  <select id="qiugu"  resultMap="BaseResultMap">
+    select * from t_getorder where get_state=0
+  </select>
+  <select id="wgdr" resultMap="BaseResultMap">
+    SELECT * from t_getorder where get_state=1 order by get_id desc
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_getorder
+    where get_id = #{getId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_getorder
+    where get_id = #{getId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.dlg.proj.demo.entity.Getorder" >
+    insert into t_getorder (get_id, order_id, user_id, 
+      get_state, get_time)
+    values (#{getId,jdbcType=INTEGER}, #{orderId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, 
+      #{getState,jdbcType=INTEGER}, #{getTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dlg.proj.demo.entity.Getorder" >
+    insert into t_getorder
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="getId != null" >
+        get_id,
+      </if>
+      <if test="orderId != null" >
+        order_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="getState != null" >
+        get_state,
+      </if>
+      <if test="getTime != null" >
+        get_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="getId != null" >
+        #{getId,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="getState != null" >
+        #{getState,jdbcType=INTEGER},
+      </if>
+      <if test="getTime != null" >
+        #{getTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dlg.proj.demo.entity.Getorder" >
+    update t_getorder
+    <set >
+      <if test="orderId != null" >
+        order_id = #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="getState != null" >
+        get_state = #{getState,jdbcType=INTEGER},
+      </if>
+      <if test="getTime != null" >
+        get_time = #{getTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where get_id = #{getId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dlg.proj.demo.entity.Getorder" >
+    update t_getorder
+    set order_id = #{orderId,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=INTEGER},
+      get_state = #{getState,jdbcType=INTEGER},
+      get_time = #{getTime,jdbcType=TIMESTAMP}
+    where get_id = #{getId,jdbcType=INTEGER}
+  </update>
+  <update id="abnor" parameterType="java.lang.Integer">
+    UPDATE t_getorder set get_state=9 where get_id=#{getId}
+  </update>
+
+  <!--查询我接的全部订单-->
+  <select id="selectByUserid" resultType="int">
+    SELECT order_id,get_state from t_getorder where user_id = #{userId} and get_state = 0 ORDER BY get_id DESC
+  </select>
+
+  <select id="selectByState1" resultType="int">
+    SELECT order_id from t_getorder where user_id = #{userId} and get_state = 1 ORDER BY get_id DESC
+  </select>
+
+  <select id="selectByState2" resultType="int">
+    SELECT order_id from t_getorder where user_id = #{userId} and get_state = 2 ORDER BY get_id DESC
+  </select>
+
+  <select id="selectByState3" resultType="int">
+    SELECT order_id from t_getorder where user_id = #{userId} and get_state = 3 ORDER BY get_id DESC
+  </select>
+  <!--待同意-->
+  <select id="jiedandetails" resultMap="BaseResultMap">
+    SELECT user_id,get_id FROM t_getorder where order_id = #{oid} and get_state = 0 ORDER BY get_id DESC
+  </select>
+  <!--进行中-->
+  <select id="jiedandetails2" resultMap="BaseResultMap">
+    SELECT user_id,get_id FROM t_getorder where order_id = #{oid} and get_state = 1 ORDER BY get_id DESC
+  </select>
+  <!--已完成-->
+  <select id="jiedandetails3" resultMap="BaseResultMap">
+    SELECT user_id,get_id FROM t_getorder where order_id = #{oid} and get_state = 2 ORDER BY get_id DESC
+  </select>
+  <!--//雇主同意之后修改订单状态-->
+  <update id="updateState" parameterType="int">
+    UPDATE t_getorder set get_state=1 where get_id=#{getid}
+  </update>
+
+  <!--//雇主拒绝之后修改订单状态-->
+  <update id="updateState2" parameterType="int">
+    UPDATE t_getorder set get_state=3 where get_id=#{getid}
+  </update>
+
+  <select id="selectOrderByUidOid"  resultType="int">
+    select count(1) from t_getorder where order_id=#{orderId} and user_id=#{userId}
+  </select>
+</mapper>
